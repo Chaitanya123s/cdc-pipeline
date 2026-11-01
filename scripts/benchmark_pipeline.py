@@ -1,3 +1,4 @@
+
 import json
 import time
 import sys
@@ -8,8 +9,11 @@ from datetime import datetime, timezone
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
+# Create a fresh database for every benchmark run
+timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+BENCHMARK_DB = PROJECT_ROOT / "data" / f"benchmark_{timestamp}.db"
+
 # Configure database BEFORE importing pipeline
-BENCHMARK_DB = PROJECT_ROOT / "data" / "benchmark_cdc.db"
 os.environ["CDC_DATABASE_PATH"] = str(BENCHMARK_DB)
 
 from src.cdc.pipeline import run_pipeline
@@ -22,6 +26,7 @@ REPORT_DIR.mkdir(parents=True, exist_ok=True)
 def run_benchmark():
     print("Starting CDC performance benchmark...")
     print("Input file:", INPUT_FILE)
+    print("Benchmark database:", BENCHMARK_DB)
 
     start_time = time.perf_counter()
 
@@ -41,6 +46,7 @@ def run_benchmark():
         "benchmark_timestamp": datetime.now(
             timezone.utc
         ).isoformat(),
+        "database_file": BENCHMARK_DB.name,
         "source_file": INPUT_FILE.name,
         "total_records": total_records,
         "processed_records": summary["processed_records"],
@@ -54,7 +60,7 @@ def run_benchmark():
         ],
     }
 
-    report_path = REPORT_DIR / "performance_report.json"
+    report_path = REPORT_DIR / f"performance_{timestamp}.json"
 
     with open(report_path, "w", encoding="utf-8") as file:
         json.dump(benchmark_report, file, indent=4)
