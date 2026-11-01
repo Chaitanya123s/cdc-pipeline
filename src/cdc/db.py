@@ -8,17 +8,40 @@ from datetime import datetime, timezone
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DATABASE_PATH = PROJECT_ROOT / "data" / "cdc_pipeline.db"
+import os
+
+DATABASE_PATH = Path(
+    os.environ.get(
+        "CDC_DATABASE_PATH",
+        str(PROJECT_ROOT / "data" / "cdc_pipeline.db")
+    )
+)
+
 
 
 def get_connection():
-    """Create a connection to the SQLite database."""
+    """Create an optimized SQLite database connection."""
     DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    connection = sqlite3.connect(DATABASE_PATH)
+    connection = sqlite3.connect(
+        DATABASE_PATH,
+        timeout=30
+    )
+
     connection.row_factory = sqlite3.Row
 
+    # Improve concurrent read/write handling
+    connection.execute("PRAGMA journal_mode=WAL")
+
+    # Reduce synchronization overhead while retaining
+    # SQLite's normal durability guarantees
+    connection.execute("PRAGMA synchronous=NORMAL")
+
+    # Keep temporary tables and indexes in memory
+    connection.execute("PRAGMA temp_store=MEMORY")
+
     return connection
+
 
 
 def initialize_database():

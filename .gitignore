@@ -4,3 +4,5 @@ __pycache__/
 *.pyc
 .env
 *.db
+data/raw/large_customer_events.csv
+reports/

@@ -1,15 +1,18 @@
-
 import json
 import time
 import sys
+import os
 from pathlib import Path
 from datetime import datetime, timezone
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.cdc.pipeline import run_pipeline
+# Configure database BEFORE importing pipeline
+BENCHMARK_DB = PROJECT_ROOT / "data" / "benchmark_cdc.db"
+os.environ["CDC_DATABASE_PATH"] = str(BENCHMARK_DB)
 
+from src.cdc.pipeline import run_pipeline
 
 INPUT_FILE = PROJECT_ROOT / "data" / "raw" / "large_customer_events.csv"
 REPORT_DIR = PROJECT_ROOT / "reports"
