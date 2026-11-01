@@ -93,14 +93,76 @@ The pipeline will handle:
 - Malformed input records.
 - Unexpected schema changes.
 - Empty input batches.
-
 ## 8. Setup and Execution
 
-Setup and execution commands will be documented after implementation.
+### Prerequisites
+- Python 3.10 or later
+- pip
+
+### Installation
+
+Create a virtual environment:
+
+    python -m venv venv
+
+Activate on Windows PowerShell:
+
+    .\venv\Scripts\Activate.ps1
+
+Install dependencies:
+
+    pip install -r requirements.txt
+
+### Run the sample pipeline
+
+    python -m src.cdc.pipeline
+
+### Generate synthetic benchmark data
+
+    python scripts/generate_large_dataset.py
+
+### Run benchmark
+
+    python scripts/benchmark_pipeline.py
+
+### Run automated tests
+
+    python -m pytest -v
 
 ## 9. Testing and Validation
 
-Automated tests will cover normal processing, invalid records, duplicates, null values, event ordering, idempotency, and recovery scenarios.
+The project includes automated tests covering:
+
+- Valid event processing
+- Missing required customer identifiers
+- Invalid event types
+- Malformed timestamps
+- Timestamps without timezone information
+- Negative source sequence values
+- Duplicate event handling
+- Late-arriving event handling
+- Empty CSV input
+- Missing CSV columns
+- Extra CSV columns
+
+Run tests using:
+
+    python -m pytest -v
+
+Latest verified result: 11 tests passed.
+
+### Large Dataset Benchmark
+
+The pipeline successfully processed a synthetic dataset of 100,000 customer events.
+
+- Total events: 100,000
+- Processed events: 100,000
+- Rejected events: 0
+- Skipped events: 0
+- Execution time: 592.947 seconds
+- Throughput: 168.65 events/second
+- Pipeline status: SUCCESS
+- Reconciliation: PASSED
 
 ## 10. Limitations and Future Improvements
 
