@@ -1,0 +1,2 @@
+event_id,customer_id,event_type,event_timestamp,customer_name,run_id,source_file,source_seq
+BAD002,CUST999,INVALID,2026-11-01T10:00:00Z,Test Customer,RUN_REJECT02,test_invalid.csv,1

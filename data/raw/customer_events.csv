@@ -1,0 +1,7 @@
+event_id,customer_id,event_type,event_timestamp,customer_name,run_id,source_file,source_seq
+EVT001,CUST001,INSERT,2026-10-30T09:00:00Z,Amit Sharma,RUN001,customer_events.csv,1
+EVT002,CUST002,INSERT,2026-10-30T09:15:00Z,Priya Patel,RUN001,customer_events.csv,2
+EVT003,CUST001,UPDATE,2026-10-30T10:00:00Z,Amit Kumar,RUN001,customer_events.csv,3
+EVT004,CUST003,INSERT,2026-10-30T10:30:00Z,Rahul Verma,RUN001,customer_events.csv,4
+EVT005,CUST002,UPDATE,2026-10-30T11:00:00Z,Priya Shah,RUN001,customer_events.csv,5
+EVT006,CUST003,DELETE,2026-10-30T12:00:00Z,Rahul Verma,RUN001,customer_events.csv,6
