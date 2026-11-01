@@ -18,7 +18,7 @@ EXPECTED_FIELDS = {
 }
 
 
-def ingest_csv(file_path):
+def ingest_csv(file_path, run_id=None):
     """
     Read, validate and ingest customer CDC events.
 
@@ -119,7 +119,8 @@ def ingest_csv(file_path):
                     record["source_seq"] = int(
                         record["source_seq"]
                     )
-
+                    record["run_id"] = run_id or record.get("run_id")
+                    record["source_file"] = Path(file_path).name
                     valid_records.append(record)
 
                 else:
